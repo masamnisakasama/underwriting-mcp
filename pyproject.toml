@@ -1,0 +1,62 @@
+[project]
+name = "underwriting-decision-mcp"
+version = "0.1.0"
+description = "社内デモ用 保険引受判断支援 MCP（決定論ルールエンジン中核）"
+requires-python = ">=3.12"
+dependencies = [
+  "pydantic>=2.5",
+  "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+server = [
+  "mcp>=1.2",
+  "starlette>=0.37",
+  "uvicorn>=0.30",
+]
+aws = [
+  "boto3>=1.34",
+]
+dev = [
+  "pytest>=8.0",
+  "mypy>=1.8",
+  "ruff>=0.4",
+  "httpx>=0.27",
+  "mcp>=1.2",
+  "starlette>=0.37",
+  "uvicorn>=0.30",
+  "boto3>=1.34",
+  "boto3-stubs[s3,dynamodb,textract,bedrock-runtime,stepfunctions]>=1.34",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = [
+  "underwriting_core",
+  "underwriting_core.rules",
+  "underwriting_app",
+  "underwriting_app.adapters",
+  "underwriting_app.adapters.aws",
+  "underwriting_mcp",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-q"
+markers = [
+  "anyio: async tests run via the anyio pytest plugin",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.mypy]
+python_version = "3.12"
+warn_unused_ignores = true
+disallow_untyped_defs = true
+ignore_missing_imports = true

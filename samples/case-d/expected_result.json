@@ -1,0 +1,7 @@
+{
+  "recommendation": "REFER_INFO_REQUEST",
+  "human_review_required": true,
+  "rule_hit_ids": [],
+  "forced_refer_reasons": [],
+  "agent_finding_ids": ["AGENT-FREE-TEXT-001"]
+}

@@ -1,0 +1,6 @@
+{
+  "ruleset_version": "demo-medical-2026-01",
+  "product_code": "DEMO_MEDICAL_01",
+  "description_ja": "架空のデモ用引受ルール。実在保険会社の基準ではない。",
+  "disclaimer_ja": "本結果はデモ用ルールに基づく判断支援であり、最終的な保険引受判断ではありません。"
+}

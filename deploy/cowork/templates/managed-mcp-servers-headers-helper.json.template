@@ -1,0 +1,17 @@
+[
+  {
+    "name": "underwriting-decision",
+    "url": "https://REPLACE_MCP_HOST/mcp",
+    "transport": "http",
+    "headersHelper": "/usr/local/bin/get-underwriting-mcp-token",
+    "headersHelperTtlSec": 900,
+    "toolPolicy": {
+      "create_underwriting_case": "ask",
+      "start_underwriting_review": "ask",
+      "get_underwriting_review": "allow",
+      "explain_underwriting_review": "allow",
+      "simulate_underwriting_change": "allow",
+      "list_demo_cases": "allow"
+    }
+  }
+]

@@ -1,0 +1,140 @@
+# Fictional demo rules. Not production insurance underwriting criteria.
+ruleset_id: demo-medical-2026-02
+product_code: DEMO_MEDICAL_01
+description: Demo medical underwriting rules. Not production insurance rules.
+
+outcome_order:
+  - ELIGIBLE_CANDIDATE
+  - REFER_INFO_REQUEST
+  - REFER_MEDICAL_REVIEW
+  - REFER_SENIOR_REVIEW
+  - DECLINE_CANDIDATE
+
+rules:
+  - id: UW-DOC-REQUIRED-001
+    type: guardrail_rule
+    name: Required documents
+    priority: 1000
+    when:
+      required_documents:
+        - APPLICATION_FORM
+        - MEDICAL_DISCLOSURE
+        - HEALTH_CHECK
+    outcome: REFER_INFO_REQUEST
+    human_review_required: true
+    reason: Required underwriting documents are missing.
+    required_information:
+      - missing_required_document
+
+  - id: UW-AGE-SENIOR-001
+    type: guardrail_rule
+    name: Age requires senior review
+    priority: 900
+    when:
+      any:
+        - field: applicant.age
+          op: gt
+          value: 70
+    outcome: REFER_SENIOR_REVIEW
+    human_review_required: true
+    reason: Applicant age is above the demo senior review threshold.
+    required_information:
+      - senior_underwriter_review
+
+  - id: UW-BP-SEVERE-001
+    type: guardrail_rule
+    name: Severe blood pressure
+    priority: 850
+    when:
+      any:
+        - field: health.blood_pressure.systolic
+          op: gte
+          value: 180
+        - field: health.blood_pressure.diastolic
+          op: gte
+          value: 110
+    outcome: REFER_SENIOR_REVIEW
+    human_review_required: true
+    reason: Blood pressure is in the severe range for this demo rule set.
+    required_information:
+      - repeat_blood_pressure_measurement
+      - physician_comment
+      - treatment_status
+      - medication_details
+
+  - id: UW-BP-MEDICAL-001
+    type: screening_rule
+    name: Elevated blood pressure
+    priority: 800
+    when:
+      any:
+        - field: health.blood_pressure.systolic
+          op: gte
+          value: 160
+        - field: health.blood_pressure.diastolic
+          op: gte
+          value: 100
+    outcome: REFER_MEDICAL_REVIEW
+    human_review_required: true
+    reason: Blood pressure exceeds the demo medical review threshold.
+    required_information:
+      - repeat_blood_pressure_measurement
+      - treatment_status
+      - medication_details
+
+  - id: UW-DISCLOSURE-MISMATCH-001
+    type: screening_rule
+    name: Disclosure and health check mismatch
+    priority: 750
+    when:
+      all:
+        - field: medical.disclosure.has_health_check_abnormality
+          op: eq
+          value: false
+        - field: medical.disclosure.free_text
+          op: contains
+          value: 健診異常なし
+        - field: health.blood_pressure.systolic
+          op: gte
+          value: 160
+    outcome: REFER_INFO_REQUEST
+    human_review_required: true
+    reason: Disclosure says no abnormality, but health check indicates elevated blood pressure.
+    required_information:
+      - applicant_confirmation
+      - health_check_follow_up_result
+
+  - id: UW-TREATMENT-MEDICAL-001
+    type: screening_rule
+    name: Current treatment
+    priority: 700
+    when:
+      all:
+        - field: medical.current_treatment.has_current_treatment
+          op: eq
+          value: true
+    outcome: REFER_MEDICAL_REVIEW
+    human_review_required: true
+    reason: Current treatment is declared and requires underwriting review.
+    required_information:
+      - condition_name
+      - treatment_start_date
+      - latest_status
+      - physician_comment
+
+  - id: UW-MEDICATION-MEDICAL-001
+    type: screening_rule
+    name: Current medication
+    priority: 650
+    when:
+      all:
+        - field: medical.medications.has_medication
+          op: eq
+          value: true
+    outcome: REFER_MEDICAL_REVIEW
+    human_review_required: true
+    reason: Current medication is declared and requires underwriting review.
+    required_information:
+      - medication_name
+      - dosage
+      - prescribing_condition

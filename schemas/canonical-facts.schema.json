@@ -1,0 +1,294 @@
+{
+  "$defs": {
+    "BoundingBox": {
+      "additionalProperties": false,
+      "properties": {
+        "height": {
+          "title": "Height",
+          "type": "number"
+        },
+        "left": {
+          "title": "Left",
+          "type": "number"
+        },
+        "top": {
+          "title": "Top",
+          "type": "number"
+        },
+        "width": {
+          "title": "Width",
+          "type": "number"
+        }
+      },
+      "required": [
+        "left",
+        "top",
+        "width",
+        "height"
+      ],
+      "title": "BoundingBox",
+      "type": "object"
+    },
+    "ContradictionItem": {
+      "additionalProperties": false,
+      "properties": {
+        "contradiction_id": {
+          "title": "Contradiction Id",
+          "type": "string"
+        },
+        "description_ja": {
+          "title": "Description Ja",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "key": {
+          "title": "Key",
+          "type": "string"
+        }
+      },
+      "required": [
+        "contradiction_id",
+        "key",
+        "description_ja"
+      ],
+      "title": "ContradictionItem",
+      "type": "object"
+    },
+    "DocumentType": {
+      "description": "対象帳票種別（§7.2）。",
+      "enum": [
+        "APPLICATION_FORM",
+        "MEDICAL_DISCLOSURE",
+        "HEALTH_CHECK",
+        "SUPPLEMENTAL"
+      ],
+      "title": "DocumentType",
+      "type": "string"
+    },
+    "Evidence": {
+      "additionalProperties": false,
+      "description": "ページ単位で追跡可能な抽出根拠（§9 evidence）。",
+      "properties": {
+        "bounding_box": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BoundingBox"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "confidence": {
+          "title": "Confidence",
+          "type": "number"
+        },
+        "document_id": {
+          "title": "Document Id",
+          "type": "string"
+        },
+        "document_type": {
+          "$ref": "#/$defs/DocumentType"
+        },
+        "evidence_id": {
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "field": {
+          "title": "Field",
+          "type": "string"
+        },
+        "file_name": {
+          "title": "File Name",
+          "type": "string"
+        },
+        "normalized_value": {
+          "default": null,
+          "title": "Normalized Value"
+        },
+        "page": {
+          "title": "Page",
+          "type": "integer"
+        },
+        "source_block_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Source Block Ids",
+          "type": "array"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "document_id",
+        "document_type",
+        "file_name",
+        "page",
+        "field",
+        "text",
+        "confidence"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "FactMeta": {
+      "additionalProperties": false,
+      "description": "重要 fact のステータス・信頼度・根拠（§11 の per-fact メタ）。",
+      "properties": {
+        "confidence": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Confidence"
+        },
+        "evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "status": {
+          "$ref": "#/$defs/FactStatus",
+          "default": "PRESENT"
+        }
+      },
+      "title": "FactMeta",
+      "type": "object"
+    },
+    "FactStatus": {
+      "description": "canonical fact の状態（§11）。不明値を空文字・0・false で代用しないための区別。",
+      "enum": [
+        "PRESENT",
+        "MISSING",
+        "AMBIGUOUS",
+        "CONTRADICTED",
+        "NOT_APPLICABLE"
+      ],
+      "title": "FactStatus",
+      "type": "string"
+    },
+    "MissingInfoItem": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "title": "Field",
+          "type": "string"
+        },
+        "reason_ja": {
+          "title": "Reason Ja",
+          "type": "string"
+        },
+        "severity": {
+          "$ref": "#/$defs/Severity",
+          "default": "MEDIUM"
+        }
+      },
+      "required": [
+        "field",
+        "reason_ja"
+      ],
+      "title": "MissingInfoItem",
+      "type": "object"
+    },
+    "Severity": {
+      "enum": [
+        "HIGH",
+        "MEDIUM",
+        "LOW"
+      ],
+      "title": "Severity",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "確定 canonical facts。抽出段の出力契約（§11 デモサブセット）。",
+  "properties": {
+    "applicant": {
+      "additionalProperties": true,
+      "title": "Applicant",
+      "type": "object"
+    },
+    "application": {
+      "additionalProperties": true,
+      "title": "Application",
+      "type": "object"
+    },
+    "contradictions": {
+      "items": {
+        "$ref": "#/$defs/ContradictionItem"
+      },
+      "title": "Contradictions",
+      "type": "array"
+    },
+    "evidence": {
+      "items": {
+        "$ref": "#/$defs/Evidence"
+      },
+      "title": "Evidence",
+      "type": "array"
+    },
+    "expected_documents": {
+      "items": {
+        "$ref": "#/$defs/DocumentType"
+      },
+      "title": "Expected Documents",
+      "type": "array"
+    },
+    "extraction_validation_failed": {
+      "default": false,
+      "title": "Extraction Validation Failed",
+      "type": "boolean"
+    },
+    "field_meta": {
+      "additionalProperties": {
+        "$ref": "#/$defs/FactMeta"
+      },
+      "title": "Field Meta",
+      "type": "object"
+    },
+    "health": {
+      "additionalProperties": true,
+      "title": "Health",
+      "type": "object"
+    },
+    "medical": {
+      "additionalProperties": true,
+      "title": "Medical",
+      "type": "object"
+    },
+    "missing_information": {
+      "items": {
+        "$ref": "#/$defs/MissingInfoItem"
+      },
+      "title": "Missing Information",
+      "type": "array"
+    },
+    "present_documents": {
+      "items": {
+        "$ref": "#/$defs/DocumentType"
+      },
+      "title": "Present Documents",
+      "type": "array"
+    }
+  },
+  "title": "CanonicalFacts",
+  "type": "object"
+}

@@ -1,0 +1,101 @@
+{
+  "applicant": {
+    "age": 75,
+    "product_code": "DEMO_MEDICAL_01",
+    "smoking_status": "SMOKER",
+    "height_cm": 168.0,
+    "weight_kg": 80.0,
+    "bmi": 28.3
+  },
+  "health": {
+    "blood_pressure": { "systolic": 170, "diastolic": 110 },
+    "hba1c": 7.2
+  },
+  "medical": {
+    "current_medications": ["amlodipine"],
+    "medications": {
+      "has_medication": true,
+      "items": ["amlodipine"],
+      "free_text": "amlodipine"
+    },
+    "disclosure": {
+      "has_health_check_abnormality": false,
+      "has_hospitalization_history": false,
+      "has_surgery_history": false,
+      "free_text": "服薬なしと申告"
+    }
+  },
+  "contradictions": [
+    {
+      "contradiction_id": "con_002",
+      "key": "health_exam",
+      "description_ja": "告知書と健診結果で服薬状況に不整合があります",
+      "evidence_ids": ["ev_041"]
+    }
+  ],
+  "missing_information": [
+    {
+      "field": "medical.current_treatment",
+      "reason_ja": "治療状況の記載が確認できません",
+      "severity": "MEDIUM"
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "ev_age",
+      "document_id": "doc_application",
+      "document_type": "APPLICATION_FORM",
+      "file_name": "application_form.pdf",
+      "page": 1,
+      "field": "applicant.age",
+      "text": "年齢 75 歳",
+      "normalized_value": 75,
+      "confidence": 0.99
+    },
+    {
+      "evidence_id": "ev_bp",
+      "document_id": "doc_health",
+      "document_type": "HEALTH_CHECK",
+      "file_name": "health_check.pdf",
+      "page": 1,
+      "field": "blood_pressure",
+      "text": "170 / 110 mmHg",
+      "normalized_value": { "systolic": 170, "diastolic": 110 },
+      "confidence": 0.97
+    },
+    {
+      "evidence_id": "ev_hba1c",
+      "document_id": "doc_health",
+      "document_type": "HEALTH_CHECK",
+      "file_name": "health_check.pdf",
+      "page": 1,
+      "field": "hba1c",
+      "text": "HbA1c 7.2%",
+      "normalized_value": 7.2,
+      "confidence": 0.96
+    },
+    {
+      "evidence_id": "ev_041",
+      "document_id": "doc_disclosure",
+      "document_type": "MEDICAL_DISCLOSURE",
+      "file_name": "medical_disclosure.pdf",
+      "page": 2,
+      "field": "medication_statement",
+      "text": "服薬なしと申告",
+      "normalized_value": "NONE",
+      "confidence": 0.9
+    }
+  ],
+  "field_meta": {
+    "applicant.age": { "status": "PRESENT", "confidence": 0.99, "evidence_ids": ["ev_age"] },
+    "health.blood_pressure.systolic": { "status": "PRESENT", "confidence": 0.97, "evidence_ids": ["ev_bp"] },
+    "health.blood_pressure.diastolic": { "status": "PRESENT", "confidence": 0.97, "evidence_ids": ["ev_bp"] },
+    "health.hba1c": { "status": "PRESENT", "confidence": 0.96, "evidence_ids": ["ev_hba1c"] },
+    "medical.current_treatment": { "status": "MISSING", "confidence": null, "evidence_ids": [] },
+    "medical.medications.has_medication": { "status": "PRESENT", "confidence": 0.9, "evidence_ids": ["ev_041"] },
+    "medical.disclosure.has_health_check_abnormality": { "status": "PRESENT", "confidence": 0.9, "evidence_ids": ["ev_041"] }
+  },
+  "expected_documents": ["APPLICATION_FORM", "MEDICAL_DISCLOSURE", "HEALTH_CHECK"],
+  "present_documents": ["APPLICATION_FORM", "MEDICAL_DISCLOSURE", "HEALTH_CHECK"],
+  "extraction_validation_failed": false
+}

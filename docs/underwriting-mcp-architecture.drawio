@@ -1,0 +1,232 @@
+<mxfile host="app.diagrams.net" modified="2026-06-21T00:00:00.000Z" agent="Codex" version="24.7.17" type="device">
+  <diagram id="underwriting-mcp-architecture" name="Architecture Overview">
+    <mxGraphModel dx="1900" dy="1300" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <mxCell id="title" value="Underwriting Decision MCP Architecture" style="text;html=1;strokeColor=none;fillColor=none;fontSize=28;fontStyle=1;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="720" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="subtitle" value="Remote MCP for insurance underwriting support demo. Deterministic rules make the recommendation; Bedrock is used for extraction and narrative only." style="text;html=1;strokeColor=none;fillColor=none;fontSize=13;fontColor=#4D4D4D;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="42" y="60" width="1120" height="30" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="userBoundary" value="User PC / Cowork workspace" style="swimlane;whiteSpace=wrap;html=1;startSize=30;rounded=0;collapsible=0;fillColor=#F8FBFF;strokeColor=#6C8EBF;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="110" width="380" height="470" as="geometry"/>
+        </mxCell>
+        <mxCell id="awsBoundary" value="AWS account - underwriting demo workload" style="swimlane;whiteSpace=wrap;html=1;startSize=30;rounded=0;collapsible=0;fillColor=#FBFCF7;strokeColor=#82B366;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="460" y="110" width="1260" height="900" as="geometry"/>
+        </mxCell>
+        <mxCell id="edgeBoundary" value="Public edge" style="swimlane;whiteSpace=wrap;html=1;startSize=26;rounded=0;collapsible=0;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="500" y="160" width="250" height="360" as="geometry"/>
+        </mxCell>
+        <mxCell id="serviceBoundary" value="Remote MCP service - ECS Fargate" style="swimlane;whiteSpace=wrap;html=1;startSize=26;rounded=0;collapsible=0;fillColor=#E1F5FE;strokeColor=#6C8EBF;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="790" y="160" width="370" height="520" as="geometry"/>
+        </mxCell>
+        <mxCell id="workflowBoundary" value="Asynchronous workflow" style="swimlane;whiteSpace=wrap;html=1;startSize=26;rounded=0;collapsible=0;fillColor=#E6F2E6;strokeColor=#82B366;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="160" width="480" height="520" as="geometry"/>
+        </mxCell>
+        <mxCell id="dataBoundary" value="Encrypted data plane" style="swimlane;whiteSpace=wrap;html=1;startSize=26;rounded=0;collapsible=0;fillColor=#F5F5F5;strokeColor=#666666;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="500" y="720" width="660" height="240" as="geometry"/>
+        </mxCell>
+        <mxCell id="deployBoundary" value="Distribution / deployment artifacts" style="swimlane;whiteSpace=wrap;html=1;startSize=26;rounded=0;collapsible=0;fillColor=#F8F1FF;strokeColor=#9673A6;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="620" width="380" height="250" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="workspace" value="Allowed workspace folder&#xa;PDFs: application, disclosure, health check&#xa;Generated underwriting-report.md" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="70" y="160" width="320" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="cowork" value="Claude Desktop / Cowork on 3P&#xa;AWS Bedrock provider via IAM Identity Center&#xa;WebSearch/WebFetch disabled for demo" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="70" y="270" width="320" height="95" as="geometry"/>
+        </mxCell>
+        <mxCell id="plugin" value="Organization Plugin&#xa;Underwriting Review skill&#xa;review-case + upload_case.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="70" y="395" width="320" height="85" as="geometry"/>
+        </mxCell>
+        <mxCell id="managedMcp" value="managedMcpServers&#xa;Remote MCP URL /mcp&#xa;JWT auth + tool policy" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="70" y="510" width="320" height="50" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="route53" value="Route 53 + ACM&#xa;optional hostname and TLS cert" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="530" y="205" width="190" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="alb" value="Internet-facing ALB&#xa;HTTPS 443&#xa;Only public entrypoint" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="530" y="300" width="190" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="waf" value="AWS WAF&#xa;rate limit" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="530" y="405" width="190" height="55" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="fastmcp" value="FastMCP ASGI app&#xa;/mcp streamable HTTP&#xa;/healthz" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="830" y="205" width="290" height="75" as="geometry"/>
+        </mxCell>
+        <mxCell id="uploadApi" value="Upload API&#xa;/v1/cases/{case_id}/documents/{document_type}&#xa;single-use short upload token" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="830" y="310" width="290" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="auth" value="Auth / guards&#xa;MCP bearer JWT&#xa;Origin + host validation&#xa;tool errors without stack traces" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="830" y="420" width="290" height="85" as="geometry"/>
+        </mxCell>
+        <mxCell id="svc" value="UnderwritingService&#xa;6 tools + 3 resources&#xa;create, start, get, explain, simulate, list demos" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="830" y="535" width="290" height="95" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="sfn" value="Step Functions Standard&#xa;ValidateCase -> Map documents -> Normalize -> Assemble&#xa;MarkJobFailed catch path" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1240" y="205" width="400" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="lambda" value="Docker Lambda worker&#xa;validate_case / process_document / normalize / assemble" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1240" y="315" width="400" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="textract" value="Amazon Textract&#xa;FORMS / TABLES / SIGNATURES&#xa;demo-low-cost can stub extraction" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1240" y="420" width="185" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="bedrock" value="Amazon Bedrock Runtime&#xa;Claude model&#xa;fact normalization and Japanese narrative&#xa;does not choose final recommendation" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1455" y="420" width="185" height="105" as="geometry"/>
+        </mxCell>
+        <mxCell id="core" value="underwriting_core&#xa;CanonicalFacts&#xa;deterministic rules engine&#xa;explain + what-if diff" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1240" y="555" width="400" height="85" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="s3" value="S3 ArtifactsBucket&#xa;KMS encrypted, SSL enforced, public access blocked&#xa;intake PDFs, textract JSON, canonical facts, decision result" style="shape=cylinder3d;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#F5F5F5;strokeColor=#666666;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="530" y="775" width="260" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="ddb" value="DynamoDB JobsTable&#xa;KMS encrypted&#xa;case records, jobs, upload tokens, idempotency keys" style="shape=cylinder3d;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#F5F5F5;strokeColor=#666666;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="840" y="775" width="280" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="rulesets" value="rulesets/demo-medical-2026-02&#xa;fictional demo YAML rules&#xa;guardrails + screening metadata" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1240" y="760" width="400" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="prompts" value="prompts/*.md&#xa;extract, repair, narrative, explain, scenario parsing" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1240" y="855" width="400" height="60" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="cdk" value="AWS CDK stacks&#xa;NetworkStack, DataStack, WorkflowStack, McpStack&#xa;private mode or demo-low-cost mode" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="70" y="665" width="320" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="dist" value="Other PC distribution&#xa;Cowork 3P managed config&#xa;Plugin copy scripts / org-plugins&#xa;No duplicate .mcp.json in plugin" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="70" y="775" width="320" height="70" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="note1" value="Data boundary note&#xa;Business documents, extraction output, facts, prompts, and decisions stay in AWS workload services. Cowork startup may contact Claude distribution endpoints, but this design does not send underwriting data to Anthropic API." style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=12;align=left;verticalAlign=top;spacing=10;" vertex="1" parent="1">
+          <mxGeometry x="500" y="1035" width="580" height="110" as="geometry"/>
+        </mxCell>
+        <mxCell id="note2" value="Runtime modes&#xa;APP_MODE=mock uses in-memory stores and fixture analyzer for local demos. APP_MODE=aws swaps ports to S3, DynamoDB, and Step Functions without changing the service layer." style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=12;align=left;verticalAlign=top;spacing=10;" vertex="1" parent="1">
+          <mxGeometry x="1120" y="1035" width="560" height="110" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="edge1" value="attach PDFs" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#6C8EBF;fontSize=11;" edge="1" parent="1" source="workspace" target="cowork">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge2" value="Skill drives workflow" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#9673A6;fontSize=11;" edge="1" parent="1" source="plugin" target="cowork">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge3" value="configured server" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#9673A6;fontSize=11;" edge="1" parent="1" source="managedMcp" target="cowork">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge4" value="MCP tool calls /mcp" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#6C8EBF;fontSize=11;" edge="1" parent="1" source="cowork" target="alb">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="455" y="318"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge5" value="PDF upload multipart" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#6C8EBF;fontSize=11;" edge="1" parent="1" source="plugin" target="alb">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="455" y="438"/>
+              <mxPoint x="455" y="350"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge6" value="optional DNS/TLS" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#D6B656;fontSize=11;" edge="1" parent="1" source="route53" target="alb">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge7" value="protected by" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#D6B656;fontSize=11;" edge="1" parent="1" source="waf" target="alb">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge8" value="forward to task:8000" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#6C8EBF;fontSize=11;" edge="1" parent="1" source="alb" target="fastmcp">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge9" value="upload route" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#6C8EBF;fontSize=11;" edge="1" parent="1" source="fastmcp" target="uploadApi">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge10" value="auth middleware" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#6C8EBF;fontSize=11;" edge="1" parent="1" source="fastmcp" target="auth">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge11" value="calls service" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#6C8EBF;fontSize=11;" edge="1" parent="1" source="auth" target="svc">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge12" value="store PDFs / read results" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#666666;fontSize=11;" edge="1" parent="1" source="svc" target="s3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge13" value="cases / jobs / tokens" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#666666;fontSize=11;" edge="1" parent="1" source="svc" target="ddb">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge14" value="start execution" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#82B366;fontSize=11;" edge="1" parent="1" source="svc" target="sfn">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge15" value="invoke states" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#82B366;fontSize=11;" edge="1" parent="1" source="sfn" target="lambda">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge16" value="analyze PDFs" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#82B366;fontSize=11;" edge="1" parent="1" source="lambda" target="textract">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge17" value="normalize / repair / narrative" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#82B366;fontSize=11;" edge="1" parent="1" source="lambda" target="bedrock">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge18" value="assemble deterministic decision" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#82B366;fontSize=11;" edge="1" parent="1" source="lambda" target="core">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge19" value="rules" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#666666;fontSize=11;" edge="1" parent="1" source="rulesets" target="core">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge20" value="prompt templates" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#666666;fontSize=11;" edge="1" parent="1" source="prompts" target="bedrock">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge21" value="read/write artifacts" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#666666;fontSize=11;" edge="1" parent="1" source="lambda" target="s3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge22" value="update progress/result URI" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#666666;fontSize=11;" edge="1" parent="1" source="lambda" target="ddb">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge23" value="poll result / explain / what-if" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#6C8EBF;fontSize=11;dashed=1;" edge="1" parent="1" source="svc" target="cowork">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="780" y="640"/>
+              <mxPoint x="430" y="640"/>
+              <mxPoint x="430" y="318"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge24" value="save report" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#6C8EBF;fontSize=11;" edge="1" parent="1" source="cowork" target="workspace">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge25" value="deploys" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#9673A6;fontSize=11;" edge="1" parent="1" source="cdk" target="awsBoundary">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="440" y="705"/>
+              <mxPoint x="440" y="120"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge26" value="installs / configures" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#9673A6;fontSize=11;" edge="1" parent="1" source="dist" target="plugin">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="245" y="755"/>
+              <mxPoint x="245" y="500"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge27" value="Cowork model calls" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#82B366;fontSize=11;dashed=1;" edge="1" parent="1" source="cowork" target="bedrock">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="430" y="300"/>
+              <mxPoint x="430" y="1000"/>
+              <mxPoint x="1680" y="1000"/>
+              <mxPoint x="1680" y="472"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

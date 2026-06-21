@@ -1,0 +1,102 @@
+{
+  "applicant": {
+    "age": 52,
+    "product_code": "DEMO_MEDICAL_01",
+    "smoking_status": "NON_SMOKER",
+    "height_cm": 170.0,
+    "weight_kg": 72.0,
+    "bmi": 24.9
+  },
+  "health": {
+    "blood_pressure": { "systolic": 165, "diastolic": 105 },
+    "hba1c": 5.8
+  },
+  "medical": {
+    "current_medications": [],
+    "medications": {
+      "has_medication": false,
+      "items": [],
+      "free_text": ""
+    },
+    "disclosure": {
+      "has_health_check_abnormality": false,
+      "has_hospitalization_history": false,
+      "has_surgery_history": false,
+      "free_text": "健診異常なし"
+    }
+  },
+  "contradictions": [
+    {
+      "contradiction_id": "con_001",
+      "key": "health_exam",
+      "description_ja": "告知書は健診異常なしですが、健診結果は要受診です",
+      "evidence_ids": ["ev_014", "ev_028"]
+    }
+  ],
+  "missing_information": [
+    {
+      "field": "medical.current_treatment",
+      "reason_ja": "健診異常に対する治療状況が未記載です",
+      "severity": "HIGH"
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "ev_age",
+      "document_id": "doc_application",
+      "document_type": "APPLICATION_FORM",
+      "file_name": "application_form.pdf",
+      "page": 1,
+      "field": "applicant.age",
+      "text": "年齢 52 歳",
+      "normalized_value": 52,
+      "confidence": 0.99
+    },
+    {
+      "evidence_id": "ev_028",
+      "document_id": "doc_health",
+      "document_type": "HEALTH_CHECK",
+      "file_name": "health_check.pdf",
+      "page": 1,
+      "field": "blood_pressure",
+      "text": "165 / 105 mmHg",
+      "normalized_value": { "systolic": 165, "diastolic": 105 },
+      "confidence": 0.98,
+      "bounding_box": { "left": 0.51, "top": 0.31, "width": 0.18, "height": 0.04 }
+    },
+    {
+      "evidence_id": "ev_014",
+      "document_id": "doc_disclosure",
+      "document_type": "MEDICAL_DISCLOSURE",
+      "file_name": "medical_disclosure.pdf",
+      "page": 1,
+      "field": "health_exam_finding",
+      "text": "健診異常: なし",
+      "normalized_value": "NONE",
+      "confidence": 0.93
+    },
+    {
+      "evidence_id": "ev_hba1c",
+      "document_id": "doc_health",
+      "document_type": "HEALTH_CHECK",
+      "file_name": "health_check.pdf",
+      "page": 1,
+      "field": "hba1c",
+      "text": "HbA1c 5.8%",
+      "normalized_value": 5.8,
+      "confidence": 0.96
+    }
+  ],
+  "field_meta": {
+    "applicant.age": { "status": "PRESENT", "confidence": 0.99, "evidence_ids": ["ev_age"] },
+    "health.blood_pressure.systolic": { "status": "PRESENT", "confidence": 0.98, "evidence_ids": ["ev_028"] },
+    "health.blood_pressure.diastolic": { "status": "PRESENT", "confidence": 0.98, "evidence_ids": ["ev_028"] },
+    "health.hba1c": { "status": "PRESENT", "confidence": 0.96, "evidence_ids": ["ev_hba1c"] },
+    "medical.current_treatment": { "status": "MISSING", "confidence": null, "evidence_ids": [] },
+    "medical.medications.has_medication": { "status": "PRESENT", "confidence": 0.9, "evidence_ids": ["ev_014"] },
+    "medical.disclosure.has_health_check_abnormality": { "status": "PRESENT", "confidence": 0.93, "evidence_ids": ["ev_014"] }
+  },
+  "expected_documents": ["APPLICATION_FORM", "MEDICAL_DISCLOSURE", "HEALTH_CHECK"],
+  "present_documents": ["APPLICATION_FORM", "MEDICAL_DISCLOSURE", "HEALTH_CHECK"],
+  "extraction_validation_failed": false
+}

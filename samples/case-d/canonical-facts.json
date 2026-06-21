@@ -1,0 +1,106 @@
+{
+  "applicant": {
+    "age": 43,
+    "product_code": "DEMO_MEDICAL_01",
+    "smoking_status": "NON_SMOKER",
+    "height_cm": 171.0,
+    "weight_kg": 66.0,
+    "bmi": 22.6
+  },
+  "health": {
+    "blood_pressure": { "systolic": 128, "diastolic": 82 },
+    "hba1c": 5.5
+  },
+  "medical": {
+    "current_treatment": {
+      "has_current_treatment": false,
+      "conditions": [],
+      "free_text": ""
+    },
+    "current_medications": [],
+    "medications": {
+      "has_medication": false,
+      "items": [],
+      "free_text": ""
+    },
+    "disclosure": {
+      "has_health_check_abnormality": false,
+      "has_hospitalization_history": false,
+      "has_surgery_history": false,
+      "free_text": "医師から経過観察と再検査予定の指摘あり。結果は未提出。"
+    }
+  },
+  "contradictions": [],
+  "missing_information": [],
+  "evidence": [
+    {
+      "evidence_id": "ev_d_age",
+      "document_id": "doc_application",
+      "document_type": "APPLICATION_FORM",
+      "file_name": "application_form.pdf",
+      "page": 1,
+      "field": "applicant.age",
+      "text": "年齢 43 歳",
+      "normalized_value": 43,
+      "confidence": 0.99
+    },
+    {
+      "evidence_id": "ev_d_bp",
+      "document_id": "doc_health",
+      "document_type": "HEALTH_CHECK",
+      "file_name": "health_check.pdf",
+      "page": 1,
+      "field": "blood_pressure",
+      "text": "128 / 82 mmHg",
+      "normalized_value": { "systolic": 128, "diastolic": 82 },
+      "confidence": 0.98
+    },
+    {
+      "evidence_id": "ev_d_hba1c",
+      "document_id": "doc_health",
+      "document_type": "HEALTH_CHECK",
+      "file_name": "health_check.pdf",
+      "page": 1,
+      "field": "hba1c",
+      "text": "HbA1c 5.5%",
+      "normalized_value": 5.5,
+      "confidence": 0.97
+    },
+    {
+      "evidence_id": "ev_d_treat",
+      "document_id": "doc_disclosure",
+      "document_type": "MEDICAL_DISCLOSURE",
+      "file_name": "medical_disclosure.pdf",
+      "page": 1,
+      "field": "current_treatment",
+      "text": "現在治療中: いいえ",
+      "normalized_value": false,
+      "confidence": 0.95
+    },
+    {
+      "evidence_id": "ev_d_disclosure_free_text",
+      "document_id": "doc_disclosure",
+      "document_type": "MEDICAL_DISCLOSURE",
+      "file_name": "medical_disclosure.pdf",
+      "page": 2,
+      "field": "medical.disclosure.free_text",
+      "text": "医師から経過観察と再検査予定の指摘あり。結果は未提出。",
+      "normalized_value": "医師から経過観察と再検査予定の指摘あり。結果は未提出。",
+      "confidence": 0.93
+    }
+  ],
+  "field_meta": {
+    "applicant.age": { "status": "PRESENT", "confidence": 0.99, "evidence_ids": ["ev_d_age"] },
+    "health.blood_pressure.systolic": { "status": "PRESENT", "confidence": 0.98, "evidence_ids": ["ev_d_bp"] },
+    "health.blood_pressure.diastolic": { "status": "PRESENT", "confidence": 0.98, "evidence_ids": ["ev_d_bp"] },
+    "health.hba1c": { "status": "PRESENT", "confidence": 0.97, "evidence_ids": ["ev_d_hba1c"] },
+    "medical.current_treatment": { "status": "PRESENT", "confidence": 0.95, "evidence_ids": ["ev_d_treat"] },
+    "medical.current_treatment.has_current_treatment": { "status": "PRESENT", "confidence": 0.95, "evidence_ids": ["ev_d_treat"] },
+    "medical.medications.has_medication": { "status": "PRESENT", "confidence": 0.95, "evidence_ids": ["ev_d_treat"] },
+    "medical.disclosure.has_health_check_abnormality": { "status": "PRESENT", "confidence": 0.93, "evidence_ids": ["ev_d_disclosure_free_text"] },
+    "medical.disclosure.free_text": { "status": "PRESENT", "confidence": 0.93, "evidence_ids": ["ev_d_disclosure_free_text"] }
+  },
+  "expected_documents": ["APPLICATION_FORM", "MEDICAL_DISCLOSURE", "HEALTH_CHECK"],
+  "present_documents": ["APPLICATION_FORM", "MEDICAL_DISCLOSURE", "HEALTH_CHECK"],
+  "extraction_validation_failed": false
+}

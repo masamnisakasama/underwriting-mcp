@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "underwriting-decision": {
+      "url": "https://underwriting-mcp.example.com/mcp",
+      "transport": "http"
+    }
+  }
+}

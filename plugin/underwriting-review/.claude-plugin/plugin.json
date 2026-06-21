@@ -1,0 +1,9 @@
+{
+  "name": "underwriting-review",
+  "version": "0.2.0",
+  "description": "複数の保険申込帳票を読み取り、根拠付きの引受判断候補を作成する社内デモPlugin",
+  "installationPreference": "available",
+  "author": {
+    "name": "Internal Demo Team"
+  }
+}

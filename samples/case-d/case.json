@@ -1,0 +1,12 @@
+{
+  "case_id": "uw_demo_case_d",
+  "case_name": "case-d",
+  "product_code": "DEMO_MEDICAL_01",
+  "applicant_age": 43,
+  "expected_documents": ["APPLICATION_FORM", "MEDICAL_DISCLOSURE", "HEALTH_CHECK"],
+  "document_hashes": {
+    "application_form.pdf": "sha256:demo-d-application",
+    "medical_disclosure.pdf": "sha256:demo-d-disclosure",
+    "health_check.pdf": "sha256:demo-d-health"
+  }
+}

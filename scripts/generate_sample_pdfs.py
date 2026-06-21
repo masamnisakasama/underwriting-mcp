@@ -1,0 +1,151 @@
+#!/usr/bin/env python3
+"""デモ用PDFを再生成する（V2 §4）。
+
+外部ライブラリに依存せず、PDF signature・ページ数検証に通る簡易PDFを出力する。
+個人情報はすべて架空のデモデータ。
+"""
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+SAMPLES = ROOT / "samples"
+
+DOCS = {
+    "application_form.pdf": 2,
+    "medical_disclosure.pdf": 3,
+    "health_check.pdf": 2,
+}
+
+
+def _pdf_escape(text: str) -> str:
+    return text.replace("\\", "\\\\").replace("(", "\\(").replace(")", "\\)")
+
+
+def build_pdf(lines_by_page: list[list[str]]) -> bytes:
+    objects: list[bytes] = []
+    page_refs: list[str] = []
+
+    def add(obj: str) -> int:
+        objects.append(obj.encode("latin-1"))
+        return len(objects)
+
+    catalog_id = add("<< /Type /Catalog /Pages 2 0 R >>")
+    pages_id = add("PLACEHOLDER")
+    assert catalog_id == 1 and pages_id == 2
+
+    for page_no, lines in enumerate(lines_by_page, start=1):
+        content_lines = ["BT", "/F1 12 Tf", "72 760 Td"]
+        for index, line in enumerate(lines):
+            if index:
+                content_lines.append("0 -18 Td")
+            content_lines.append(f"({_pdf_escape(line)}) Tj")
+        content_lines.append("ET")
+        stream = "\n".join(content_lines).encode("latin-1", "replace")
+        content_id = add(
+            f"<< /Length {len(stream)} >>\nstream\n"
+            + stream.decode("latin-1")
+            + "\nendstream"
+        )
+        page_id = add(
+            "<< /Type /Page /Parent 2 0 R "
+            "/MediaBox [0 0 595 842] "
+            "/Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> "
+            f"/Contents {content_id} 0 R >>"
+        )
+        page_refs.append(f"{page_id} 0 R")
+        lines.append(f"Page {page_no}")
+
+    objects[1] = f"<< /Type /Pages /Kids [{' '.join(page_refs)}] /Count {len(page_refs)} >>".encode(
+        "latin-1"
+    )
+
+    chunks = [b"%PDF-1.4\n"]
+    offsets = [0]
+    for index, obj in enumerate(objects, start=1):
+        offsets.append(sum(len(c) for c in chunks))
+        chunks.append(f"{index} 0 obj\n".encode("latin-1"))
+        chunks.append(obj)
+        chunks.append(b"\nendobj\n")
+    xref_offset = sum(len(c) for c in chunks)
+    chunks.append(f"xref\n0 {len(objects) + 1}\n".encode("latin-1"))
+    chunks.append(b"0000000000 65535 f \n")
+    for offset in offsets[1:]:
+        chunks.append(f"{offset:010d} 00000 n \n".encode("latin-1"))
+    chunks.append(
+        (
+            "trailer\n"
+            f"<< /Size {len(objects) + 1} /Root 1 0 R >>\n"
+            "startxref\n"
+            f"{xref_offset}\n"
+            "%%EOF\n"
+        ).encode("latin-1")
+    )
+    return b"".join(chunks)
+
+
+def write_case(case_dir: Path) -> None:
+    meta = json.loads((case_dir / "case.json").read_text("utf-8"))
+    facts = json.loads((case_dir / "canonical-facts.json").read_text("utf-8"))
+    bp = facts["health"]["blood_pressure"]
+    treatment = facts["medical"].get("current_treatment")
+    treatment_line = (
+        "Current treatment: no"
+        if treatment is False
+        else "Current treatment: missing"
+    )
+    contradiction = bool(facts.get("contradictions"))
+    for filename, pages in DOCS.items():
+        common = [
+            f"Underwriting demo {meta['case_name']}",
+            f"Document {filename}",
+            "Fictional data for demo use only",
+        ]
+        if filename == "application_form.pdf":
+            first = common + [
+                f"Age: {meta['applicant_age']}",
+                "Product code: DEMO_MEDICAL_01",
+                f"Smoking status: {facts['applicant'].get('smoking_status', 'NON_SMOKER')}",
+                "Signature: present",
+            ]
+        elif filename == "medical_disclosure.pdf":
+            first = common + [
+                treatment_line,
+                "Current medications: "
+                + ", ".join(facts["medical"].get("current_medications", [])),
+                "Health exam finding: none" if contradiction else "Health exam finding: no issue",
+                "Signature: present",
+            ]
+        else:
+            first = common + [
+                f"Blood pressure: {bp['systolic']} / {bp['diastolic']} mmHg",
+                f"HbA1c: {facts['health']['hba1c']}",
+                f"Height cm: {facts['applicant'].get('height_cm')}",
+                f"Weight kg: {facts['applicant'].get('weight_kg')}",
+                "Overall judgment: requires visit" if contradiction else "Overall judgment: normal",
+            ]
+        page_lines = [first] + [common + [f"Continuation page {i}"] for i in range(2, pages + 1)]
+        (case_dir / filename).write_bytes(build_pdf(page_lines))
+
+    expected = case_dir / "expected-result.json"
+    if expected.is_file():
+        (case_dir / "expected_result.json").write_text(expected.read_text("utf-8"), "utf-8")
+    (case_dir / "README.md").write_text(
+        f"# {meta['case_name']}\n\n"
+        "Fictional underwriting demo case. PDFs are generated by "
+        "`scripts/generate_sample_pdfs.py`.\n",
+        "utf-8",
+    )
+
+
+def main() -> int:
+    for case_dir in sorted(SAMPLES.glob("case-*")):
+        if (case_dir / "case.json").is_file():
+            write_case(case_dir)
+    print("Generated sample PDFs.")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -1,0 +1,11 @@
+.venv
+.mypy_cache
+.pytest_cache
+.ruff_cache
+node_modules
+cdk.out
+dist-ts
+__pycache__
+*.pyc
+deploy/cowork/generated/*
+dist

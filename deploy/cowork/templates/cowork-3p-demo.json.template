@@ -1,0 +1,33 @@
+{
+  "inferenceProvider": "bedrock",
+  "inferenceCredentialKind": "interactive",
+  "inferenceBedrockRegion": "REPLACE_BEDROCK_REGION",
+  "inferenceBedrockSsoStartUrl": "REPLACE_AWS_SSO_START_URL",
+  "inferenceBedrockSsoRegion": "REPLACE_AWS_SSO_REGION",
+  "inferenceBedrockSsoAccountId": "REPLACE_AWS_ACCOUNT_ID",
+  "inferenceBedrockSsoRoleName": "REPLACE_PERMISSION_SET_NAME",
+  "inferenceModels": [
+    {
+      "name": "REPLACE_BEDROCK_INFERENCE_PROFILE_ID",
+      "labelOverride": "Claude for Underwriting Demo",
+      "anthropicFamilyTier": "sonnet"
+    }
+  ],
+  "disableDeploymentModeChooser": true,
+  "disableEssentialTelemetry": true,
+  "disableNonessentialTelemetry": true,
+  "disableNonessentialServices": true,
+  "disableAutoUpdates": true,
+  "disabledBuiltinTools": ["WebSearch", "WebFetch"],
+  "allowedWorkspaceFolders": ["~/Documents/UnderwritingDemo"],
+  "coworkEgressAllowedHosts": [
+    "downloads.claude.ai",
+    "bedrock-runtime.REPLACE_BEDROCK_REGION.amazonaws.com",
+    "bedrock.REPLACE_BEDROCK_REGION.amazonaws.com",
+    "oidc.REPLACE_AWS_SSO_REGION.amazonaws.com",
+    "portal.sso.REPLACE_AWS_SSO_REGION.amazonaws.com",
+    "*.awsapps.com",
+    "REPLACE_MCP_HOST"
+  ],
+  "managedMcpServers": REPLACE_MANAGED_MCP_SERVERS_JSON
+}

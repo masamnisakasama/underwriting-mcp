@@ -1,0 +1,54 @@
+{
+  "Comment": "Underwriting Decision MCP V2 workflow implemented by infra/lib/workflow-stack.ts",
+  "StartAt": "ValidateCase",
+  "States": {
+    "ValidateCase": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Next": "ProcessDocumentsInParallel",
+      "Catch": [{ "ErrorEquals": ["States.ALL"], "ResultPath": "$.error", "Next": "MarkJobFailed" }]
+    },
+    "ProcessDocumentsInParallel": {
+      "Type": "Map",
+      "ItemsPath": "$.documents",
+      "ItemSelector": {
+        "case_id.$": "$.case_id",
+        "job_id.$": "$.job_id",
+        "document.$": "$$.Map.Item.Value"
+      },
+      "MaxConcurrency": 3,
+      "ResultPath": "$.document_artifacts",
+      "ItemProcessor": {
+        "ProcessorConfig": { "Mode": "INLINE" },
+        "StartAt": "ProcessDocument",
+        "States": {
+          "ProcessDocument": {
+            "Type": "Task",
+            "Resource": "arn:aws:states:::lambda:invoke",
+            "End": true
+          }
+        }
+      },
+      "Next": "InvokeBedrockForNormalization",
+      "Catch": [{ "ErrorEquals": ["States.ALL"], "ResultPath": "$.error", "Next": "MarkJobFailed" }]
+    },
+    "InvokeBedrockForNormalization": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Next": "AssembleFinalResult",
+      "Catch": [{ "ErrorEquals": ["States.ALL"], "ResultPath": "$.error", "Next": "MarkJobFailed" }]
+    },
+    "AssembleFinalResult": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "End": true,
+      "Catch": [{ "ErrorEquals": ["States.ALL"], "ResultPath": "$.error", "Next": "MarkJobFailed" }]
+    },
+    "MarkJobFailed": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Next": "WorkflowFailed"
+    },
+    "WorkflowFailed": { "Type": "Fail" }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "recommendation": "NOT_ELIGIBLE_CANDIDATE",
+  "human_review_required": true,
+  "rule_hit_ids": ["DEMO-UW-001", "DEMO-UW-017", "DEMO-UW-018", "DEMO-UW-030"],
+  "forced_refer_reasons": ["重要項目が不足しています", "未解決の帳票間矛盾があります"]
+}

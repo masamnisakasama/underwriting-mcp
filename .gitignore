@@ -1,0 +1,15 @@
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.cdk.staging/
+cdk.out/
+cdk.context.json
+node_modules/
+dist/
+dist-ts/
+deploy/cowork/generated/*
+!deploy/cowork/generated/.gitignore

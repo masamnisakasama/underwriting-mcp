@@ -1,0 +1,64 @@
+# 架空のデモ用引受ルール。実在保険会社の基準ではない（§23）。
+ruleset_version: demo-medical-2026-01
+product_code: DEMO_MEDICAL_01
+rules:
+  - id: DEMO-UW-001
+    priority: 100
+    description_ja: 加入可能年齢の上限
+    when:
+      gt:
+        field: applicant.age
+        value: 70
+    result: NOT_ELIGIBLE_CANDIDATE
+    reason_ja: 申込年齢がデモ商品の上限（70歳）を超えています
+
+  - id: DEMO-UW-002
+    priority: 95
+    description_ja: 加入可能年齢の下限
+    when:
+      lt:
+        field: applicant.age
+        value: 20
+    result: NOT_ELIGIBLE_CANDIDATE
+    reason_ja: 申込年齢がデモ商品の下限（20歳）を下回っています
+
+  - id: DEMO-UW-017
+    priority: 50
+    description_ja: 高血圧値かつ治療状況不明
+    when:
+      and:
+        - or:
+            - gte:
+                field: health.blood_pressure.systolic
+                value: 160
+            - gte:
+                field: health.blood_pressure.diastolic
+                value: 100
+        - is_missing:
+            field: medical.current_treatment
+    result: REFER
+    reason_ja: 血圧がデモ基準を超過し、治療状況が不明です
+    required_information:
+      - medical.current_treatment
+      - medical.current_medications
+
+  - id: DEMO-UW-018
+    priority: 45
+    description_ja: HbA1c 高値
+    when:
+      gte:
+        field: health.hba1c
+        value: 6.5
+    result: REFER
+    reason_ja: HbA1c がデモ基準（6.5%）を超過しています
+    required_information:
+      - medical.current_treatment
+
+  - id: DEMO-UW-030
+    priority: 60
+    description_ja: 告知と健診結果の矛盾
+    when:
+      exists:
+        field: contradictions.health_exam
+    result: REFER
+    reason_ja: 告知書と健康診断結果に不整合があります
